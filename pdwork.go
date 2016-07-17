@@ -17,6 +17,8 @@ func PandocExec(inputfile, ftype string) string {
 
 	var outfile string = name + "." + ftype
 	var out string = GetUserHomedir() + "/" + "testoutput/" + name + "." + ftype
+	logrus.Debug(in)
+	logrus.Debug(out)
 
 	cmd := exec.Command("pandoc", in, "-t", outformat[ftype], "-s", "-o", out)
 	err := cmd.Run()
