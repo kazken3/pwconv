@@ -2,13 +2,22 @@
 <html lang="en">
     <head>
             <meta charset="utf-8">
-                <title>converter</title>
+                <title>simple document converter</title>
     </head>
     <body>
-        <h1>Upload file</h1>
+        <h1>simple document converter</h1>
 
         <form action="/upload" method="post" enctype="multipart/form-data">
-                Files: <input type="file" name="file"><br><br>
+                Files: <input type="file" name="file"><br>
+                To:<select name="format">
+                   <option value="odt">odt</option>
+                   <option value="rtf">rtf</option>
+                   <option value="json">json</option>
+                   <option value="html">html</option>
+                   <option value="html5">html5</option>
+                   <option value="md">markdown</option>
+                   <br>
+                   <br>
                  <input type="submit" value="Submit">
         </form>
     </body>
