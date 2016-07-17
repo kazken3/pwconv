@@ -21,6 +21,8 @@ func PandocExec(inputfile, ftype string) string {
 	logrus.Debug(out)
 
 	cmd := exec.Command("pandoc", in, "-t", outformat[ftype], "-s", "-o", out)
+
+	logrus.Debug(cmd)
 	err := cmd.Run()
 	if err != nil {
 		logrus.Fatal(err)
