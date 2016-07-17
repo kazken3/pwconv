@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 
 	"net/http"
@@ -11,7 +10,13 @@ import (
 	"github.com/labstack/echo/middleware"
 
 	"github.com/GeertJohan/go.rice"
+	"github.com/Sirupsen/logrus"
 )
+
+func init() {
+	logrus.SetLevel(logrus.DebugLevel)
+	logrus.SetFormatter(&logrus.JSONFormatter{})
+}
 
 func Exist(name string) bool {
 	if _, err := os.Stat(name); err != nil {
@@ -33,7 +38,7 @@ func main() {
 	dirname := "testoutput"
 	if !Exist(dirname) {
 		if err := os.Mkdir(dirname, 0777); err != nil {
-			log.Println("Directory error...")
+			logrus.Error("Directory error...")
 			os.Exit(1)
 		}
 	}
@@ -43,7 +48,7 @@ func main() {
 	e.Static("/dl", "testoutput")
 
 	e.POST("/upload", Upload())
-	log.Println("Listening...")
+	logrus.Info("Listening...")
 
 	e.Run(standard.New(":1323"))
 	//log.Println("access to http://localhst:1323")

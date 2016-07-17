@@ -1,10 +1,11 @@
 package main
 
 import (
-	"log"
 	"os/exec"
 	"path"
 	"strings"
+
+	"github.com/Sirupsen/logrus"
 )
 
 var outformat = map[string]string{"odt": "odt", "rtf": "rtf", "json": "json", "html": "html", "html5": "html5", "md": "markdown"}
@@ -20,7 +21,7 @@ func PandocExec(inputfile, ftype string) string {
 	cmd := exec.Command("pandoc", in, "-t", outformat[ftype], "-s", "-o", out)
 	err := cmd.Run()
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 	return outfile
 
