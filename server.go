@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"os/user"
 
 	"net/http"
 
@@ -27,6 +28,14 @@ func Exist(name string) bool {
 	return true
 }
 
+func GetUserHomedir() string {
+	user, err := user.Current()
+	if err != nil {
+		logrus.Fatal(err)
+	}
+	return user.HomeDir
+}
+
 func main() {
 
 	e := echo.New()
@@ -35,7 +44,7 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Use(middleware.Static("public"))
 
-	dirname := "testoutput"
+	dirname := GetUserHomedir() + "/" + "testoutput"
 	if !Exist(dirname) {
 		if err := os.Mkdir(dirname, 0777); err != nil {
 			logrus.Error("Directory error...")
