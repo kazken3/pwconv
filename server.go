@@ -4,10 +4,23 @@ import (
 	"log"
 	"os"
 
+	"net/http"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
+
+	"github.com/GeertJohan/go.rice"
 )
+
+func Exist(name string) bool {
+	if _, err := os.Stat(name); err != nil {
+		if os.IsNotExist(err) {
+			return false
+		}
+	}
+	return true
+}
 
 func main() {
 
@@ -17,9 +30,20 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Use(middleware.Static("public"))
 
+	dirname := "testoutput"
+	if !Exist(dirname) {
+		if err := os.Mkdir(dirname, 0777); err != nil {
+			log.Println("Directory error...")
+			os.Exit(1)
+		}
+	}
+	assetHandler := http.FileServer(rice.MustFindBox("public").HTTPBox())
+
+	e.GET("/", standard.WrapHandler(assetHandler))
+	e.Static("/dl", "testoutput")
+
 	e.POST("/upload", Upload())
-	host, _ := os.Hostname()
-	log.Println("access http://", host)
+	log.Println("Listening...")
 
 	e.Run(standard.New(":1323"))
 	//log.Println("access to http://localhst:1323")

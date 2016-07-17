@@ -29,7 +29,7 @@ func Upload() echo.HandlerFunc {
 		defer src.Close()
 
 		// Destination
-		dst, err := os.Create("./public/work/" + file.Filename)
+		dst, err := os.Create("testoutput/" + file.Filename)
 		if err != nil {
 			return err
 		}
@@ -40,6 +40,6 @@ func Upload() echo.HandlerFunc {
 			return err
 		}
 		out := PandocExec(file.Filename)
-		return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded and convert successfully <a href=\"work/%s\">%s</a> .</p><a href=\"/\">top</a>", file.Filename, out, out))
+		return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded and convert successfully <a href=\"dl/%s\">%s</a> .</p><a href=\"/\">top</a>", file.Filename, out, out))
 	}
 }
