@@ -21,7 +21,8 @@ func PandocExec(inputfile, ftype string) string {
 	logrus.Debug(in)
 	logrus.Debug(out)
 	logrus.Debug(os.Getenv("SNAP"))
-	cmd := exec.Command("pandoc", in, "-t", outformat[ftype], "-s", "-o", out)
+	template_data := os.Getenv("SNAP") + "/" + "usr/share/pandoc/data"
+	cmd := exec.Command("pandoc", "--data-dir", template_data, in, "-t", outformat[ftype], "-s", "-o", out)
 
 	logrus.Debug(cmd)
 	err := cmd.Run()
