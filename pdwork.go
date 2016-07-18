@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"os/exec"
 	"path"
 	"strings"
@@ -19,7 +20,7 @@ func PandocExec(inputfile, ftype string) string {
 	var out string = GetUserHomedir() + "/" + "testoutput/" + name + "." + ftype
 	logrus.Debug(in)
 	logrus.Debug(out)
-
+	logrus.Debug(os.Getenv("SNAP"))
 	cmd := exec.Command("pandoc", in, "-t", outformat[ftype], "-s", "-o", out)
 
 	logrus.Debug(cmd)
